@@ -1,14 +1,28 @@
-import create from "zustand"
+import { create } from "zustand"
 
 export const useTodoStore = create((set) => ({
   todos: [],
-  addTodo: () => {
-    set()
+  addTodo: (text) => {
+    const newTodo = {
+      id: Date.now(),
+      text,
+      completed: false,
+    }
+
+    set((state) => ({
+      todos: [...state.todos, newTodo],
+    }))
   },
-  deleteTodo: () => {
-    set()
+  deleteTodo: (id) => {
+    set((state) => ({
+      todos: state.todos.filter((todo) => todo.id !== id),
+    }))
+
   },
-  completeTodo: () => {
-    set()
+  completeTodo: (id) => {
+    set((state) => ({
+      todos: state.todos.map((todo) =>
+        todo.id === id ? { ...todo, completed: !todo.completed } : todo),
+    }))
   },
 }))
